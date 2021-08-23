@@ -1,17 +1,24 @@
-require('dotenv').config();
-const express = require('express')
-const app = express()
+// Third Party Packages
+require("dotenv").config();
+const express = require("express");
 
-const middleware = require("./middleware")
+// Custom Packages
+const middleware = require("./middleware");
 const utils = require("./utils");
 const logger = require("./logger");
+const UserRouter = require("./auth");
 
-app.use(middleware.InitAPILoggerMiddleware)
+// Setup
+const app = express();
 
-app.get('/', (req, res) => {
-  utils.ServeResponse(req,res,200,"Hello Sharan","")
-})
+app.use(express.json());
+app.use(middleware.InitAPILoggerMiddleware);
+app.use("/api/users", UserRouter);
 
-app.listen(4214, () => {  
-  console.log(`Example app listening at http://localhost:4214`)
-})
+app.get("/", (req, res) => {
+  utils.ServeResponse(req, res, 200, "Hello Sharan", "");
+});
+
+app.listen(4214, () => {
+  console.log(`Example app listening at http://localhost:4214`);
+});
