@@ -25,6 +25,13 @@ const InitAPILoggerMiddleware = async (req, res, next) => {
 
 const AuthMiddleware = async (req, res, next) => {
   try {
+    if (req.header("Authorization") == "") {
+      return utils.ServeUnauthorizedResponse(
+        req,
+        res,
+        new Error("Session Expired. Please login again.")
+      );
+    }
     const token = req.header("Authorization").replace("Bearer ", "");
     const decoded = await jwt.VerifyAccessToken(token);
     if (decoded.error != "") {

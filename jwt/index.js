@@ -23,20 +23,8 @@ const GenerateAccessToken = async (req, user) => {
 
   const encToken = crypt.StringEncrypt(token);
   const key = jwtutils.GenerateAccessTokenRedisKey(req, user.email);
-  const isSet = await redis.SetDataWithExpiry(
-    key,
-    encToken,
-    constants.JWT_TOKEN_EXPIRY
-  );
-  if (isSet) {
-    logger.LogMessage(req, constants.LOG_INFO, "[REDIS] SET " + key);
-  } else {
-    logger.LogMessage(
-      req,
-      constants.LOG_ERROR,
-      "[REDIS] Operation Failed -- SET " + key
-    );
-  }
+  await redis.SetDataWithExpiry(key, encToken, constants.JWT_TOKEN_EXPIRY);
+
   return encToken;
 };
 

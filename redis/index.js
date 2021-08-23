@@ -17,15 +17,20 @@ const GetData = async (key) => {
     const response = await new Promise((resolve, reject) => {
       client.get(key, (err, res) => {
         if (err) {
+          logger.LogMessage(
+            req,
+            constants.LOG_INFO,
+            "[REDIS] Operation Failed -- GET " + key
+          );
           reject(err);
         }
+        logger.LogMessage(req, constants.LOG_INFO, "[REDIS] GET " + key);
         resolve(res);
       });
     });
 
     return response;
   } catch (e) {
-    logger.LogMessage(null, constants.LOG_ERROR, e.message);
     return null;
   }
 };
@@ -36,15 +41,20 @@ const DeleteData = async (key) => {
     const response = await new Promise((resolve, reject) => {
       client.del(key, (err, res) => {
         if (err) {
+          logger.LogMessage(
+            null,
+            constants.LOG_INFO,
+            "[REDIS] Operation Failed -- DEL " + key
+          );
           reject(err);
         }
+        logger.LogMessage(null, constants.LOG_INFO, "[REDIS] DEL " + key);
         resolve(res);
       });
     });
 
     return response;
   } catch (e) {
-    logger.LogMessage(null, constants.LOG_ERROR, e.message);
     return null;
   }
 };
@@ -55,14 +65,19 @@ const SetData = async (key, data) => {
     const response = await new Promise((resolve, reject) => {
       client.set(key, data, (err, res) => {
         if (err) {
+          logger.LogMessage(
+            null,
+            constants.LOG_INFO,
+            "[REDIS] Operation Failed -- SET " + key
+          );
           reject(err);
         }
+        logger.LogMessage(null, constants.LOG_INFO, "[REDIS] SET " + key);
         resolve(res);
       });
     });
     return response;
   } catch (e) {
-    logger.LogMessage(null, constants.LOG_ERROR, e.message);
     return false;
   }
 };
@@ -73,14 +88,19 @@ const SetDataWithExpiry = async (key, data, seconds) => {
     const response = await new Promise((resolve, reject) => {
       client.setex(key, seconds, data, (err, res) => {
         if (err) {
+          logger.LogMessage(
+            null,
+            constants.LOG_INFO,
+            "[REDIS] Operation Failed -- SETEXPIRY " + key
+          );
           reject(err);
         }
+        logger.LogMessage(null, constants.LOG_INFO, "[REDIS] SETEXPIRY " + key);
         resolve(res);
       });
     });
     return response;
   } catch (e) {
-    logger.LogMessage(null, constants.LOG_ERROR, e.message);
     return false;
   }
 };
@@ -91,8 +111,14 @@ const IncrementData = async (key, times = 1) => {
     const response = await new Promise((resolve, reject) => {
       client.incrby(key, times, (err, res) => {
         if (err) {
+          logger.LogMessage(
+            null,
+            constants.LOG_INFO,
+            "[REDIS] Operation Failed -- INCR " + key
+          );
           reject(err);
         }
+        logger.LogMessage(null, constants.LOG_INFO, "[REDIS] INCR " + key);
         resolve(res);
       });
     });
@@ -113,9 +139,14 @@ const IncrementDataWithExpiry = async (key, times = 1, expiry) => {
       const ttl = await GetTTL(key);
       await SetDataWithExpiry(key, parseInt(olddata) + times, ttl);
     }
+    logger.LogMessage(null, constants.LOG_INFO, "[REDIS] INCR EXPIRY " + key);
     return true;
   } catch (e) {
-    logger.LogMessage(null, constants.LOG_ERROR, e.message);
+    logger.LogMessage(
+      null,
+      constants.LOG_INFO,
+      "[REDIS] Operation Failed -- INCR EXPIRY " + key
+    );
     return false;
   }
 };
@@ -126,14 +157,19 @@ const GetTTL = async (key) => {
     const response = await new Promise((resolve, reject) => {
       client.ttl(key, (err, res) => {
         if (err) {
+          logger.LogMessage(
+            null,
+            constants.LOG_INFO,
+            "[REDIS] Operation Failed -- GET TTL " + key
+          );
           reject(err);
         }
+        logger.LogMessage(null, constants.LOG_INFO, "[REDIS] GET TTL " + key);
         resolve(res);
       });
     });
     return parseInt(response);
   } catch (e) {
-    logger.LogMessage(null, constants.LOG_ERROR, e.message);
     return 0;
   }
 };

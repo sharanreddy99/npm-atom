@@ -10,7 +10,6 @@ const UserRouter = require("./auth");
 
 // Setup
 const app = express();
-
 app.use(express.json());
 app.use(middleware.InitAPILoggerMiddleware);
 app.use("/api/users", UserRouter);
