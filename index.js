@@ -1,23 +1,26 @@
 // Third Party Packages
-require("dotenv").config();
-const express = require("express");
 
 // Custom Packages
-const middleware = require("./middleware");
-const utils = require("./utils");
+const auth = require("./auth");
+const aws = require("./aws");
+const constants = require("./constants");
+const crypt = require("./crypt");
+const db = require("./db");
+const jwt = require("./jwt");
 const logger = require("./logger");
-const UserRouter = require("./auth");
+const middleware = require("./middleware");
+const redis = require("./redis");
+const utils = require("./utils");
 
-// Setup
-const app = express();
-app.use(express.json());
-app.use(middleware.InitAPILoggerMiddleware);
-app.use("/api/users", UserRouter);
-
-app.get("/", (req, res) => {
-  utils.ServeResponse(req, res, 200, "Hello Sharan", "");
-});
-
-app.listen(4214, () => {
-  console.log(`Example app listening at http://localhost:4214`);
-});
+module.exports = {
+  auth,
+  aws,
+  constants,
+  crypt,
+  db,
+  jwt,
+  logger,
+  middleware,
+  redis,
+  utils,
+};
