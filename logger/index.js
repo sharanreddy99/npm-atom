@@ -118,8 +118,9 @@ const LogMessage = (req, type, message) => {
   console.log(log);
 
   // Log to File
+  fileName = dateformat("yyyymmdd") + ".log";
   fs.writeFile(
-    process.env.LOG_FILE_PATH,
+    process.env.LOG_FILE_PATH + fileName,
     JSON.stringify(log) + "\n",
     { flag: "a+" },
     (err) => {}
@@ -152,8 +153,9 @@ const logAPI = async (log) => {
   console.log(newLog);
 
   // Log to File
+  fileName = dateformat("yyyymmdd") + ".log";
   fs.writeFile(
-    process.env.LOG_FILE_PATH,
+    process.env.LOG_FILE_PATH + fileName,
     JSON.stringify(newLog) + "\n",
     { flag: "a+" },
     (err) => {}

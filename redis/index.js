@@ -1,13 +1,15 @@
 // Third Party Packages
 const redis = require("redis");
-const { promisify } = require("util");
 
 // Custom Packages
 const logger = require("../logger");
 const constants = require("../constants");
 
 // Setup
-const client = redis.createClient(6379, "127.0.0.1");
+const client = redis.createClient(
+  process.env.REDIS_PORT,
+  process.env.REDIS_HOST
+);
 
 // Functions
 

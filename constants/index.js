@@ -7,8 +7,8 @@ const LOG_DEBUG = "debug";
 const JWT_TOKEN_EXPIRY = 3600;
 
 // User Registration Limit
-const USER_REGISTRATION_LIMIT = 5;
-const USER_REGISTRATION_LIMIT_DURATION = 3 * 60;
+const USER_REGISTRATION_LIMIT = 10;
+const USER_REGISTRATION_LIMIT_DURATION = 60 * 60;
 
 module.exports = {
   LOG_DEBUG,

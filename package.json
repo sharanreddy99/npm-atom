@@ -4,7 +4,7 @@
   "description": "Reusable libraries for personal projects",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "exit 0"
   },
   "author": "Sharan Reddy",
   "license": "ISC",
@@ -28,5 +28,17 @@
     "stack-trace": "^1.0.0-pre1",
     "uuid": "^8.3.2",
     "validator": "^13.6.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sharanreddy99/npm-atom.git"
+  },
+  "keywords": [
+    "npm-atom"
+  ],
+  "bugs": {
+    "url": "https://github.com/sharanreddy99/npm-atom/issues"
+  },
+  "homepage": "https://github.com/sharanreddy99/npm-atom#readme"
 }
