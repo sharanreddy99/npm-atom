@@ -26,13 +26,14 @@ const GetData = async (key) => {
           );
           reject(err);
         }
-        logger.LogMessage(req, constants.LOG_INFO, "[REDIS] GET " + key);
+        logger.LogMessage(null, constants.LOG_INFO, "[REDIS] GET " + key);
         resolve(res);
       });
     });
 
     return response;
   } catch (e) {
+    logger.LogMessage(null, constants.LOG_ERROR, "[REDIS] GET " + e.message);
     return null;
   }
 };
@@ -57,6 +58,7 @@ const DeleteData = async (key) => {
 
     return response;
   } catch (e) {
+    logger.LogMessage(null, constants.LOG_ERROR, "[REDIS] DEL " + e.message);
     return null;
   }
 };
@@ -80,6 +82,7 @@ const SetData = async (key, data) => {
     });
     return response;
   } catch (e) {
+    logger.LogMessage(null, constants.LOG_ERROR, "[REDIS] SET " + e.message);
     return false;
   }
 };
@@ -103,6 +106,11 @@ const SetDataWithExpiry = async (key, data, seconds) => {
     });
     return response;
   } catch (e) {
+    logger.LogMessage(
+      null,
+      constants.LOG_ERROR,
+      "[REDIS] SETEXPIRY " + e.message
+    );
     return false;
   }
 };
@@ -126,7 +134,7 @@ const IncrementData = async (key, times = 1) => {
     });
     return response;
   } catch (e) {
-    logger.LogMessage(null, constants.LOG_ERROR, e.message);
+    logger.LogMessage(null, constants.LOG_ERROR, "[REDIS] INCR " + e.message);
     return false;
   }
 };
@@ -146,7 +154,7 @@ const IncrementDataWithExpiry = async (key, times = 1, expiry) => {
   } catch (e) {
     logger.LogMessage(
       null,
-      constants.LOG_INFO,
+      constants.LOG_ERROR,
       "[REDIS] Operation Failed -- INCR EXPIRY " + key
     );
     return false;
@@ -172,6 +180,11 @@ const GetTTL = async (key) => {
     });
     return parseInt(response);
   } catch (e) {
+    logger.LogMessage(
+      null,
+      constants.LOG_ERROR,
+      "[REDIS] GET TTL " + e.message
+    );
     return 0;
   }
 };

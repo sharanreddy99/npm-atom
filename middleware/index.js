@@ -10,7 +10,7 @@ const utils = require("../utils");
 const constants = require("../constants");
 
 // Models
-const User = require("../db/models/users");
+const User = require("../db/models").User;
 
 // Functions
 const InitAPILoggerMiddleware = async (req, res, next) => {

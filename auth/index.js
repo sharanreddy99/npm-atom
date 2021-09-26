@@ -15,7 +15,7 @@ const utils = require("../utils");
 const redis = require("../redis");
 
 // Models
-const User = require("../db/models/users");
+const User = require("../db/models").User;
 
 // Setup
 const router = new express.Router();
@@ -95,7 +95,14 @@ router.post("/login", async (req, res) => {
 router.get("/logout", auth, async (req, res) => {
   try {
     const key = jwtutils.GenerateAccessTokenRedisKey(req, req.user.email);
-    await redis.DeleteData(key);
+    let isValid = await redis.DeleteData(key);
+    if (!isValid) {
+      utils.ServeUnauthorizedResponse(
+        req,
+        res,
+        new Error("Session Expired. Please login again.")
+      );
+    }
     utils.ServeResponse(req, res, 200, "Logout successful.");
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);

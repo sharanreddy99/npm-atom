@@ -13,7 +13,7 @@ const constants = require("../constants");
 const caller = require("./caller");
 
 // Models
-const Logs = require("../db/models/logs");
+const Logs = require("../db/models").Logs;
 
 // Functions
 const NewAdditionalLogger = (ua, ip, host, frameno) => {
@@ -115,7 +115,7 @@ const LogMessage = (req, type, message) => {
   }
 
   // Log to Console
-  console.log(log);
+  // console.log(log);
 
   // Log to File
   fileName = dateformat("yyyymmdd") + ".log";
@@ -150,7 +150,7 @@ const logAPI = async (log) => {
   }
 
   // Log to Console
-  console.log(newLog);
+  // console.log(newLog);
 
   // Log to File
   fileName = dateformat("yyyymmdd") + ".log";
