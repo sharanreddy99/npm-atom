@@ -210,9 +210,34 @@ router.patch("/forgotpassword", async (req, res) => {
 
     user.password = req.body.password;
     await user.save();
-    utils.ServeResponse(req, res, 201, {
-      msg: "Password Changed Succesfully. You can login now.",
-    });
+    utils.ServeResponse(
+      req,
+      res,
+      201,
+      "Password Changed Succesfully. You can login now."
+    );
+  } catch (e) {
+    logger.LogMessage(req, constants.LOG_ERROR, e.message);
+    utils.ServeInternalServerErrorResponse(req, res);
+  }
+});
+
+router.post("/encrypt", (req, res) => {
+  try {
+    let data = req.body;
+    let encData = crypt.StringEncrypt(JSON.stringify(data));
+    utils.ServeResponse(req, res, 201, encData);
+  } catch (e) {
+    logger.LogMessage(req, constants.LOG_ERROR, e.message);
+    utils.ServeInternalServerErrorResponse(req, res);
+  }
+});
+
+router.post("/decrypt", (req, res) => {
+  try {
+    let data = req.body;
+    let decData = crypt.StringDecrypt(JSON.parse(data));
+    utils.ServeResponse(req, res, 201, decData);
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
     utils.ServeInternalServerErrorResponse(req, res);
