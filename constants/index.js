@@ -2,6 +2,7 @@
 const LOG_INFO = "info";
 const LOG_ERROR = "error";
 const LOG_DEBUG = "debug";
+const LOG_FOLDER_PATH = "./logs";
 
 // JWT Token Expiry in seconds
 const JWT_TOKEN_EXPIRY = 3600;
@@ -22,6 +23,7 @@ module.exports = {
   LOG_DEBUG,
   LOG_ERROR,
   LOG_INFO,
+  LOG_FOLDER_PATH,
   JWT_TOKEN_EXPIRY,
   USER_REGISTRATION_LIMIT,
   USER_REGISTRATION_LIMIT_DURATION,

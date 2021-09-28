@@ -24,6 +24,11 @@ const emailSchema = new mongoose.Schema({
   placeholders: {
     type: [String],
   },
+  row_status: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
 });
 
 const Email = mongoose.model("Email", emailSchema);

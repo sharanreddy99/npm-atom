@@ -13,6 +13,7 @@ const jwt = require("../jwt");
 const jwtutils = require("../jwt/utils");
 const utils = require("../utils");
 const redis = require("../redis");
+const crypt = require("../crypt");
 
 // Models
 const User = require("../db/models").User;

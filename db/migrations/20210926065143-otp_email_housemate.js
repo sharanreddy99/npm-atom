@@ -38,6 +38,7 @@ module.exports = {
       `,
       textbody: null,
       placeholders: ["OTP_VAL", "OTP_DURATION", "OTP_UNITS"],
+      row_status: 1,
     });
   },
 

@@ -65,12 +65,21 @@ router.post("/send", async (req, res) => {
       text: emailObj.textbody,
     };
 
-    transporter.sendMail(mailOptions, function (err, data) {
-      if (err) {
-        throw err;
-      }
-      utils.ServeResponse(req, res, 201);
-    });
+    if (emailObj.row_status == 1) {
+      transporter.sendMail(mailOptions, function (err, data) {
+        if (err) {
+          throw err;
+        }
+        utils.ServeResponse(req, res, 201, "Email sent successfully.");
+      });
+    } else {
+      utils.ServeResponse(
+        req,
+        res,
+        201,
+        "Email has been sent as it is disabled. Please enable it in the collection."
+      );
+    }
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
     utils.ServeInternalServerErrorResponse(req, res);
