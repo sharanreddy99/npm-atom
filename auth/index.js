@@ -187,7 +187,7 @@ router.get("/verifyemail", async (req, res) => {
       );
     }
 
-    utils.ServeResponse(req, res, 201, { email: user.email });
+    utils.ServeResponse(req, res, 201, { email: req.query.email });
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
     utils.ServeInternalServerErrorResponse(req, res);

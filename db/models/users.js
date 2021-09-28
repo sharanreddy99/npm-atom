@@ -36,7 +36,6 @@ const userSchema = new mongoose.Schema(
       unique: true,
       minlength: 10,
       length: 10,
-      required: [true, "Mobile number is required"],
     },
     password: {
       type: String,

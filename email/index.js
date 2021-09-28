@@ -100,8 +100,7 @@ router.post("/verify", async (req, res) => {
       utils.ServeBadRequestResponse(
         req,
         res,
-        new Error("OTP didn't match."),
-        "OTP didn't match. Please try again."
+        new Error("OTP didn't match. Please try again.")
       );
     } else if (otpResult == constants.OTP_ERROR) {
       throw new Error("OTP Verification failed due to server error.");
