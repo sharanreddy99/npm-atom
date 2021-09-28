@@ -77,7 +77,7 @@ router.post("/send", async (req, res) => {
         req,
         res,
         201,
-        "Email has been sent as it is disabled. Please enable it in the collection."
+        "Sending email failed as it is disabled. Please enable it in the collection."
       );
     }
   } catch (e) {

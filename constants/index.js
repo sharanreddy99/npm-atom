@@ -2,7 +2,7 @@
 const LOG_INFO = "info";
 const LOG_ERROR = "error";
 const LOG_DEBUG = "debug";
-const LOG_FOLDER_PATH = "./logs";
+const LOG_FOLDER_PATH = "./logs/";
 
 // JWT Token Expiry in seconds
 const JWT_TOKEN_EXPIRY = 3600;
