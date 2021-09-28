@@ -97,7 +97,7 @@ router.get("/logout", auth, async (req, res) => {
     const key = jwtutils.GenerateAccessTokenRedisKey(req, req.user.email);
     let isValid = await redis.DeleteData(key);
     if (!isValid) {
-      utils.ServeUnauthorizedResponse(
+      return utils.ServeUnauthorizedResponse(
         req,
         res,
         new Error("Session Expired. Please login again.")
@@ -165,6 +165,52 @@ router.patch("/user", auth, upload.single("avatar"), async (req, res) => {
     await req.user.save();
     utils.ServeResponse(req, res, 201, {
       message: "User updated successfully. Please login again.",
+    });
+  } catch (e) {
+    logger.LogMessage(req, constants.LOG_ERROR, e.message);
+    utils.ServeInternalServerErrorResponse(req, res);
+  }
+});
+
+router.get("/verifyemail", async (req, res) => {
+  try {
+    let email = crypt.StringEncrypt(req.query.email);
+    const user = await dbutils.findOne(User, { email: email });
+    if (!user) {
+      return utils.ServeBadRequestResponse(
+        req,
+        res,
+        new Error(
+          "The Email-ID specified not registered with us. Please check the email and try again."
+        )
+      );
+    }
+
+    utils.ServeResponse(req, res, 201, { email: user.email });
+  } catch (e) {
+    logger.LogMessage(req, constants.LOG_ERROR, e.message);
+    utils.ServeInternalServerErrorResponse(req, res);
+  }
+});
+
+router.patch("/forgotpassword", async (req, res) => {
+  try {
+    let email = crypt.StringEncrypt(req.body.email);
+    const user = await dbutils.findOne(User, { email: email });
+    if (!user) {
+      return utils.ServeBadRequestResponse(
+        req,
+        res,
+        new Error(
+          "The Email-ID specified not registered with us. Please check the email and try again."
+        )
+      );
+    }
+
+    user.password = req.body.password;
+    await user.save();
+    utils.ServeResponse(req, res, 201, {
+      msg: "Password Changed Succesfully. You can login now.",
     });
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);

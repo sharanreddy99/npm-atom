@@ -30,8 +30,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       unique: true,
       required: [true, "Email id is required"],
-      trim: true,
-      lowercase: true,
     },
     mobile: {
       type: String,
