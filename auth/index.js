@@ -224,7 +224,7 @@ router.patch("/forgotpassword", async (req, res) => {
 
 router.post("/encrypt", (req, res) => {
   try {
-    let data = req.body;
+    let data = req.body.data;
     let encData = crypt.StringEncrypt(JSON.stringify(data));
     utils.ServeResponse(req, res, 201, encData);
   } catch (e) {
@@ -235,8 +235,8 @@ router.post("/encrypt", (req, res) => {
 
 router.post("/decrypt", (req, res) => {
   try {
-    let data = req.body;
-    let decData = crypt.StringDecrypt(JSON.parse(data));
+    let data = req.body.data;
+    let decData = JSON.parse(crypt.StringDecrypt(data));
     utils.ServeResponse(req, res, 201, decData);
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);

@@ -115,20 +115,20 @@ const LogMessage = (req, type, message) => {
   }
 
   // Log to Console
-  console.log(log);
+  // console.log(log);
 
   // Log to File
-  fileName = dateformat("yyyymmdd") + ".log";
-  if (!fs.existsSync(constants.LOG_FOLDER_PATH)) {
-    fs.mkdirSync(constants.LOG_FOLDER_PATH, {});
-  }
+  // fileName = dateformat("yyyymmdd") + ".log";
+  // if (!fs.existsSync(constants.LOG_FOLDER_PATH)) {
+  //   fs.mkdirSync(constants.LOG_FOLDER_PATH, {});
+  // }
 
-  fs.writeFile(
-    constants.LOG_FOLDER_PATH + fileName,
-    JSON.stringify(log) + "\n",
-    { flag: "a+" },
-    (err) => {}
-  );
+  // fs.writeFile(
+  //   constants.LOG_FOLDER_PATH + fileName,
+  //   JSON.stringify(log) + "\n",
+  //   { flag: "a+" },
+  //   (err) => {}
+  // );
 };
 
 const logAPI = async (log) => {
@@ -154,20 +154,20 @@ const logAPI = async (log) => {
   }
 
   // Log to Console
-  console.log(newLog);
+  // console.log(newLog);
 
   // Log to File
-  fileName = dateformat("yyyymmdd") + ".log";
-  if (!fs.existsSync(constants.LOG_FOLDER_PATH)) {
-    fs.mkdirSync(constants.LOG_FOLDER_PATH, {});
-  }
+  // fileName = dateformat("yyyymmdd") + ".log";
+  // if (!fs.existsSync(constants.LOG_FOLDER_PATH)) {
+  //   fs.mkdirSync(constants.LOG_FOLDER_PATH, {});
+  // }
 
-  fs.writeFile(
-    constants.LOG_FOLDER_PATH + fileName,
-    JSON.stringify(newLog) + "\n",
-    { flag: "a+" },
-    (err) => {}
-  );
+  // fs.writeFile(
+  //   constants.LOG_FOLDER_PATH + fileName,
+  //   JSON.stringify(newLog) + "\n",
+  //   { flag: "a+" },
+  //   (err) => {}
+  // );
 };
 
 module.exports = { InitAPILogger, UpdateAPILogger, LogMessage };
