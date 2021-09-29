@@ -25,7 +25,7 @@ const InitAPILoggerMiddleware = async (req, res, next) => {
 
 const AuthMiddleware = async (req, res, next) => {
   try {
-    if (req.header("Authorization") == "") {
+    if (!req.header("Authorization")) {
       return utils.ServeUnauthorizedResponse(
         req,
         res,
@@ -34,7 +34,7 @@ const AuthMiddleware = async (req, res, next) => {
     }
     const token = req.header("Authorization").replace("Bearer ", "");
     const decoded = await jwt.VerifyAccessToken(token);
-    if (decoded.error != "") {
+    if (decoded.error) {
       return utils.ServeUnauthorizedResponse(
         req,
         res,

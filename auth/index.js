@@ -164,9 +164,12 @@ router.patch("/user", auth, upload.single("avatar"), async (req, res) => {
     }
 
     await req.user.save();
-    utils.ServeResponse(req, res, 201, {
-      message: "User updated successfully. Please login again.",
-    });
+    utils.ServeResponse(
+      req,
+      res,
+      201,
+      "User updated successfully. Please login again."
+    );
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
     utils.ServeInternalServerErrorResponse(req, res);
