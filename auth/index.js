@@ -123,7 +123,7 @@ router.get("/user", auth, async (req, res) => {
 router.delete("/user", auth, async (req, res) => {
   try {
     await dbutils.deleteOne(User, { email: req.user.email });
-    utils.ServeResponse(req, res, 201, { data: "User deleted successfully." });
+    utils.ServeResponse(req, res, 201, "User hsa been deleted successfully.");
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
     utils.ServeInternalServerErrorResponse(req, res);
