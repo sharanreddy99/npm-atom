@@ -33,7 +33,6 @@ const userSchema = new mongoose.Schema(
     },
     mobile: {
       type: String,
-      unique: true,
       minlength: 10,
       length: 10,
       default: "----------",

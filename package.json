@@ -1,6 +1,6 @@
 {
   "name": "npm-atom",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Reusable libraries for personal projects",
   "main": "index.js",
   "scripts": {

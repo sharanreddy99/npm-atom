@@ -197,6 +197,27 @@ router.get("/verifyemail", async (req, res) => {
   }
 });
 
+router.get("/new/email", async (req, res) => {
+  try {
+    let email = crypt.StringEncrypt(req.query.email);
+    const user = await dbutils.findOne(User, { email: email });
+    if (user) {
+      return utils.ServeBadRequestResponse(
+        req,
+        res,
+        new Error(
+          "The Email-ID is already registered with us. Please try again with another email."
+        )
+      );
+    }
+
+    utils.ServeResponse(req, res, 201, { email: req.query.email });
+  } catch (e) {
+    logger.LogMessage(req, constants.LOG_ERROR, e.message);
+    utils.ServeInternalServerErrorResponse(req, res);
+  }
+});
+
 router.patch("/forgotpassword", async (req, res) => {
   try {
     let email = crypt.StringEncrypt(req.body.email);
