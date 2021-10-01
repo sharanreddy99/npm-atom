@@ -63,8 +63,9 @@ router.post("/user", upload.single("avatar"), async (req, res) => {
       return utils.ServeBadRequestResponse(
         req,
         res,
-        new Error(),
-        "The request cannot be processed due to timeout. Please try again later."
+        new Error(
+          "The request cannot be processed due to timeout. Please try again later."
+        )
       );
     } else {
       await redis.DeleteData(rKey);
@@ -198,8 +199,9 @@ router.patch("/user", auth, upload.single("avatar"), async (req, res) => {
       return utils.ServeBadRequestResponse(
         req,
         res,
-        new Error(),
-        "The request cannot be processed due to timeout. Please try again later."
+        new Error(
+          "The request cannot be processed due to timeout. Please try again later."
+        )
       );
     } else {
       await redis.DeleteData(rKey);
@@ -293,8 +295,9 @@ router.patch("/forgotpassword", async (req, res) => {
       return utils.ServeBadRequestResponse(
         req,
         res,
-        new Error(),
-        "The request cannot be processed due to timeout. Please try again later."
+        new Error(
+          "The request cannot be processed due to timeout. Please try again later."
+        )
       );
     } else {
       await redis.DeleteData(rKey);
