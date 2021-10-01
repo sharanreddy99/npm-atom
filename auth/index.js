@@ -60,7 +60,7 @@ router.post("/user", upload.single("avatar"), async (req, res) => {
 
     const rKey = await utils.VerifyOTPAuthenticity(req, req.body.email);
     if (rKey == "") {
-      utils.ServeBadRequestResponse(
+      return utils.ServeBadRequestResponse(
         req,
         res,
         new Error(),
@@ -195,7 +195,7 @@ router.patch("/user", auth, upload.single("avatar"), async (req, res) => {
 
     const rKey = await utils.VerifyOTPAuthenticity(req, req.user.email);
     if (rKey == "") {
-      utils.ServeBadRequestResponse(
+      return utils.ServeBadRequestResponse(
         req,
         res,
         new Error(),
@@ -290,7 +290,7 @@ router.patch("/forgotpassword", async (req, res) => {
 
     const rKey = await utils.VerifyOTPAuthenticity(req, req.body.email);
     if (rKey == "") {
-      utils.ServeBadRequestResponse(
+      return utils.ServeBadRequestResponse(
         req,
         res,
         new Error(),
