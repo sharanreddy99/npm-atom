@@ -1,6 +1,6 @@
 const mongoose = require("..");
 
-const collectionName = process.env.APP_NAME + "_logs";
+const collectionName = process.env.NPM_ATOM_APP_NAME + "_logs";
 
 const logsSchema = new mongoose.Schema({
   traceid: {

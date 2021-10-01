@@ -17,7 +17,7 @@ const GenerateAccessToken = async (req, user) => {
     email: user.email,
     _id: user._id.toString(),
   };
-  const token = jwt.sign(payload, process.env.CRYPTO_PASSPHRASE, {
+  const token = jwt.sign(payload, process.env.NPM_ATOM_CRYPTO_PASSPHRASE, {
     expiresIn: constants.JWT_TOKEN_EXPIRY,
   });
 
@@ -31,7 +31,10 @@ const GenerateAccessToken = async (req, user) => {
 const VerifyAccessToken = async (encToken) => {
   try {
     let token = crypt.StringDecrypt(encToken);
-    let decodedToken = await jwt.verify(token, process.env.CRYPTO_PASSPHRASE);
+    let decodedToken = await jwt.verify(
+      token,
+      process.env.NPM_ATOM_CRYPTO_PASSPHRASE
+    );
     return { _id: decodedToken._id, email: decodedToken.email, error: "" };
   } catch (e) {
     return { _id: "", email: "", error: "Unauthorized." };

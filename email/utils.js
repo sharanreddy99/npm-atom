@@ -19,10 +19,10 @@ let transporter = nodemailer.createTransport({
   secure: true,
   auth: {
     type: "Oauth2",
-    user: process.env.HOUSEMATE_NODE_EMAIL,
-    clientId: process.env.HOUSEMATE_NODE_CLIENT_ID,
-    clientSecret: process.env.HOUSEMATE_NODE_CLIENT_SECRET,
-    refreshToken: process.env.HOUSEMATE_NODE_REFRESH_TOKEN,
+    user: process.env.NPM_ATOM_EMAIL,
+    clientId: process.env.NPM_ATOM_CLIENT_ID,
+    clientSecret: process.env.NPM_ATOM_CLIENT_SECRET,
+    refreshToken: process.env.NPM_ATOM_REFRESH_TOKEN,
   },
 });
 
@@ -134,7 +134,7 @@ const SendMail = async (body, req, res) => {
   emailObj = UpdatePlaceholders(emailObj, body.placeholders);
 
   const mailOptions = {
-    from: process.env.HOUSEMATE_NODE_EMAIL,
+    from: process.env.NPM_ATOM_EMAIL,
     to: body.email,
     subject: body.subject,
     html: emailObj.htmlbody,

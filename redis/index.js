@@ -7,8 +7,8 @@ const constants = require("../constants");
 
 // Setup
 const client = redis.createClient(
-  process.env.REDIS_PORT,
-  process.env.REDIS_HOST
+  process.env.NPM_ATOM_REDIS_PORT,
+  process.env.NPM_ATOM_REDIS_HOST
 );
 
 // Functions

@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 
 // Setup
-mongoose.connect(process.env.MONGODB_URL, {
+mongoose.connect(process.env.NPM_ATOM_DATABASE_URL, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
