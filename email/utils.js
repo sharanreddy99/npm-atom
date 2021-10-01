@@ -1,10 +1,30 @@
 // Third Party Packages
+const nodemailer = require("nodemailer");
 const crs = require("crypto-random-string");
 
 // Custom Packages
 const redis = require("../redis");
 const logger = require("../logger");
 const constants = require("../constants");
+const dbutils = require("../db/utils");
+const utils = require("../utils");
+
+// Models
+const Email = require("../db/models").Email;
+
+// Setup
+let transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    type: "Oauth2",
+    user: process.env.HOUSEMATE_NODE_EMAIL,
+    clientId: process.env.HOUSEMATE_NODE_CLIENT_ID,
+    clientSecret: process.env.HOUSEMATE_NODE_CLIENT_SECRET,
+    refreshToken: process.env.HOUSEMATE_NODE_REFRESH_TOKEN,
+  },
+});
 
 // Functions
 const generateOTPRedisKey = (req, email) => {

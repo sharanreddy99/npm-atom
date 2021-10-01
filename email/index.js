@@ -1,34 +1,15 @@
 // Third Party Packages
-const nodemailer = require("nodemailer");
 const express = require("express");
 
 // Custom Packages
-const auth = require("../middleware").AuthMiddleware;
 const constants = require("../constants");
 const logger = require("../logger");
-const dbutils = require("../db/utils");
 const utils = require("../utils");
 const emailutils = require("./utils");
 const redis = require("../redis");
 
-// Models
-const Email = require("../db/models").Email;
-
 // Setup
 const router = new express.Router();
-
-let transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    type: "Oauth2",
-    user: process.env.HOUSEMATE_NODE_EMAIL,
-    clientId: process.env.HOUSEMATE_NODE_CLIENT_ID,
-    clientSecret: process.env.HOUSEMATE_NODE_CLIENT_SECRET,
-    refreshToken: process.env.HOUSEMATE_NODE_REFRESH_TOKEN,
-  },
-});
 
 // Routers
 /* 
@@ -42,7 +23,7 @@ let transporter = nodemailer.createTransport({
 router.post("/send", async (req, res) => {
   try {
     const body = req.body;
-    await SendMail(body, req, res);
+    await emailutils.SendMail(body, req, res);
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
     utils.ServeInternalServerErrorResponse(
