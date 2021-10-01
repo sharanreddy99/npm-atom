@@ -1,5 +1,7 @@
 // Custom Packages
 const logger = require("../logger");
+const redis = require("../redis");
+const constants = require("../constants");
 
 // Functions
 const ServeResponse = async (req, res, status, data) => {
@@ -64,9 +66,36 @@ const ServeInternalServerErrorResponse = async (
   res.status(status).send(respData);
 };
 
+const GenerateOTPVerifiedRedisKey = (req, email) => {
+  const extra = req.APILogger.extraLogs;
+  const key = redis.GenerateKey(
+    "otp",
+    email,
+    extra.browser,
+    extra.platform,
+    extra.host,
+    extra.ip,
+    constants.OTP_VERIFIED_STRING
+  );
+  return key;
+};
+
+const VerifyOTPAuthenticity = async (req, email) => {
+  const rKey = GenerateOTPVerifiedRedisKey(req, email);
+  const isOTPVerified = await redis.GetData(rKey);
+
+  if (isOTPVerified != constants.OTP_VERIFIED_STRING) {
+    return "";
+  }
+
+  return rKey;
+};
+
 module.exports = {
   ServeResponse,
   ServeUnauthorizedResponse,
   ServeInternalServerErrorResponse,
   ServeBadRequestResponse,
+  GenerateOTPVerifiedRedisKey,
+  VerifyOTPAuthenticity,
 };

@@ -88,4 +88,8 @@ const VerifyOTP = async (req) => {
   }
 };
 
-module.exports = { GenerateOTP, VerifyOTP, UpdatePlaceholders };
+module.exports = {
+  GenerateOTP,
+  VerifyOTP,
+  UpdatePlaceholders,
+};

@@ -14,6 +14,7 @@ const jwtutils = require("../jwt/utils");
 const utils = require("../utils");
 const redis = require("../redis");
 const crypt = require("../crypt");
+const emailutils = require("../email/utils");
 
 // Models
 const User = require("../db/models").User;
@@ -57,6 +58,18 @@ router.post("/user", upload.single("avatar"), async (req, res) => {
       constants.USER_REGISTRATION_LIMIT_DURATION
     );
 
+    const rKey = await utils.VerifyOTPAuthenticity(req, req.body.email);
+    if (rKey == "") {
+      utils.ServeBadRequestResponse(
+        req,
+        res,
+        new Error(),
+        "The request cannot be processed due to timeout. Please try again later."
+      );
+    } else {
+      await redis.DeleteData(rKey);
+    }
+
     if (req.file) {
       const buffer = await sharp(req.file.buffer)
         .resize({ width: 250, height: 250 })
@@ -74,7 +87,11 @@ router.post("/user", upload.single("avatar"), async (req, res) => {
     );
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
-    utils.ServeInternalServerErrorResponse(req, res);
+    utils.ServeInternalServerErrorResponse(
+      req,
+      res,
+      constants.ERROR_PREFIX + "register user" + constants.ERROR_SUFFIX
+    );
   }
 });
 
@@ -107,7 +124,11 @@ router.get("/logout", auth, async (req, res) => {
     utils.ServeResponse(req, res, 200, "Logout successful.");
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
-    utils.ServeInternalServerErrorResponse(req, res);
+    utils.ServeInternalServerErrorResponse(
+      req,
+      res,
+      constants.ERROR_PREFIX + "log user off" + constants.ERROR_SUFFIX
+    );
   }
 });
 
@@ -116,7 +137,11 @@ router.get("/user", auth, async (req, res) => {
     utils.ServeResponse(req, res, 200, req.user);
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
-    utils.ServeInternalServerErrorResponse(req, res);
+    utils.ServeInternalServerErrorResponse(
+      req,
+      res,
+      constants.ERROR_PREFIX + "fetch user details" + constants.ERROR_SUFFIX
+    );
   }
 });
 
@@ -126,7 +151,11 @@ router.delete("/user", auth, async (req, res) => {
     utils.ServeResponse(req, res, 201, "User hsa been deleted successfully.");
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
-    utils.ServeInternalServerErrorResponse(req, res);
+    utils.ServeInternalServerErrorResponse(
+      req,
+      res,
+      constants.ERROR_PREFIX + "delete user" + constants.ERROR_SUFFIX
+    );
   }
 });
 
@@ -151,6 +180,7 @@ router.patch("/user", auth, upload.single("avatar"), async (req, res) => {
         new Error("Some of the fields cannot be updated.")
       );
     }
+
     const key = jwtutils.GenerateAccessTokenRedisKey(req, req.user.email);
     await redis.DeleteData(key);
 
@@ -163,6 +193,18 @@ router.patch("/user", auth, upload.single("avatar"), async (req, res) => {
       req.body.avatar = buffer;
     }
 
+    const rKey = await utils.VerifyOTPAuthenticity(req, req.user.email);
+    if (rKey == "") {
+      utils.ServeBadRequestResponse(
+        req,
+        res,
+        new Error(),
+        "The request cannot be processed due to timeout. Please try again later."
+      );
+    } else {
+      await redis.DeleteData(rKey);
+    }
+
     await req.user.save();
     utils.ServeResponse(
       req,
@@ -172,7 +214,11 @@ router.patch("/user", auth, upload.single("avatar"), async (req, res) => {
     );
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
-    utils.ServeInternalServerErrorResponse(req, res);
+    utils.ServeInternalServerErrorResponse(
+      req,
+      res,
+      constants.ERROR_PREFIX + "update user" + constants.ERROR_SUFFIX
+    );
   }
 });
 
@@ -193,7 +239,11 @@ router.get("/verifyemail", async (req, res) => {
     utils.ServeResponse(req, res, 201, { email: req.query.email });
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
-    utils.ServeInternalServerErrorResponse(req, res);
+    utils.ServeInternalServerErrorResponse(
+      req,
+      res,
+      constants.ERROR_PREFIX + "verify user's email" + constants.ERROR_SUFFIX
+    );
   }
 });
 
@@ -214,7 +264,13 @@ router.get("/new/email", async (req, res) => {
     utils.ServeResponse(req, res, 201, { email: req.query.email });
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
-    utils.ServeInternalServerErrorResponse(req, res);
+    utils.ServeInternalServerErrorResponse(
+      req,
+      res,
+      constants.ERROR_PREFIX +
+        "ensure that email is not registered with us" +
+        constants.ERROR_SUFFIX
+    );
   }
 });
 
@@ -232,6 +288,18 @@ router.patch("/forgotpassword", async (req, res) => {
       );
     }
 
+    const rKey = await utils.VerifyOTPAuthenticity(req, req.body.email);
+    if (rKey == "") {
+      utils.ServeBadRequestResponse(
+        req,
+        res,
+        new Error(),
+        "The request cannot be processed due to timeout. Please try again later."
+      );
+    } else {
+      await redis.DeleteData(rKey);
+    }
+
     user.password = req.body.password;
     await user.save();
     utils.ServeResponse(
@@ -242,7 +310,13 @@ router.patch("/forgotpassword", async (req, res) => {
     );
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
-    utils.ServeInternalServerErrorResponse(req, res);
+    utils.ServeInternalServerErrorResponse(
+      req,
+      res,
+      constants.ERROR_PREFIX +
+        "update password for the user" +
+        constants.ERROR_SUFFIX
+    );
   }
 });
 
@@ -253,7 +327,11 @@ router.post("/encrypt", (req, res) => {
     utils.ServeResponse(req, res, 201, encData);
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
-    utils.ServeInternalServerErrorResponse(req, res);
+    utils.ServeInternalServerErrorResponse(
+      req,
+      res,
+      constants.ERROR_PREFIX + "encrypt data" + constants.ERROR_SUFFIX
+    );
   }
 });
 
@@ -264,7 +342,11 @@ router.post("/decrypt", (req, res) => {
     utils.ServeResponse(req, res, 201, decData);
   } catch (e) {
     logger.LogMessage(req, constants.LOG_ERROR, e.message);
-    utils.ServeInternalServerErrorResponse(req, res);
+    utils.ServeInternalServerErrorResponse(
+      req,
+      res,
+      constants.ERROR_PREFIX + "decrypt data" + constants.ERROR_SUFFIX
+    );
   }
 });
 
