@@ -123,7 +123,7 @@ const SendMail = async (body, req, res) => {
   }
 
   if (body.placeholders["otp"]) {
-    otp = await emailutils.GenerateOTP(req);
+    otp = await GenerateOTP(req);
     if (otp == "") {
       throw new Error("OTP generation failed.");
     }
@@ -131,7 +131,7 @@ const SendMail = async (body, req, res) => {
     body.placeholders["OTP_DURATION"] = 3;
     body.placeholders["OTP_UNITS"] = "minutes";
   }
-  emailObj = emailutils.UpdatePlaceholders(emailObj, body.placeholders);
+  emailObj = UpdatePlaceholders(emailObj, body.placeholders);
 
   const mailOptions = {
     from: process.env.HOUSEMATE_NODE_EMAIL,
